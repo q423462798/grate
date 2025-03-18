@@ -10,8 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pbnjay/grate"
-	"github.com/pbnjay/grate/commonxl"
+	"github.com/q423462798/grate"
+	"github.com/q423462798/grate/commonxl"
 )
 
 var _ = grate.Register("xlsx", 5, Open)
