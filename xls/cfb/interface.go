@@ -20,6 +20,15 @@ func Open(filename string) (*Document, error) {
 	return d, nil
 }
 
+func OpenReadSeeker(r io.ReadSeeker) (*Document, error) {
+	d := &Document{}
+	err := d.load(r)
+	if err != nil {
+		return nil, err
+	}
+	return d, nil
+}
+
 // List the streams contained in the document.
 func (d *Document) List() ([]string, error) {
 	var res []string

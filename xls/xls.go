@@ -76,6 +76,33 @@ func Open(filename string) (grate.Source, error) {
 	return b, err
 }
 
+func OpenReadSeeker(r io.ReadSeeker) (grate.Source, error) {
+	doc, err := cfb.OpenReadSeeker(r)
+	if err != nil {
+		return nil, err
+	}
+
+	b := &WorkBook{
+		filename: "unknown",
+		doc:      doc,
+
+		pos2substream: make(map[int64]int, 16),
+		xfs:           make([]uint16, 0, 128),
+	}
+
+	rdr, err := doc.Open("Workbook")
+	if err != nil {
+		return nil, grate.WrapErr(err, grate.ErrNotInFormat)
+	}
+	raw, err := io.ReadAll(rdr)
+	if err != nil {
+		return nil, err
+	}
+
+	err = b.loadFromStream(raw)
+	return b, err
+}
+
 func (b *WorkBook) loadFromStream(raw []byte) error {
 	return b.loadFromStream2(raw, false)
 }
